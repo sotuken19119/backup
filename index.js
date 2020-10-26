@@ -1,16 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Route, Link } from 'react-router-dom';
-import './index.css';
-import * as serviceWorker from './serviceWorker';
-import End from './end';
+import '../css/index.css';
+import * as serviceWorker from '../serviceWorker';
+import End from './End';
+import Game from './TableTest';
 import Start from './Start';
+
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
       <div>
-          <Route path="/" exact component={End} />
-          <Route path="/Start"  component={Start} />
+          <Route exact path="/"  component={Start} />
+          <Route path="/TableTest"  component={Game} />
       </div>
     </BrowserRouter>
     
