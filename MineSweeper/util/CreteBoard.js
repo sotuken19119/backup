@@ -22,7 +22,7 @@ export default (row, col, bombs) => {
                } 
             );
         }
-        board.push(subCol)
+        board.push(subCol);
     }
     
     //ボムの場所をランダムで決める
@@ -39,7 +39,7 @@ export default (row, col, bombs) => {
             //ボムの場所を格納
             mineLocation.push([x,y]);
             //ボムの数をカウント
-            bombCount++;
+            bombsCount++;
         }
     }
 
@@ -51,58 +51,58 @@ export default (row, col, bombs) => {
                 //対象マスがボムであったとき
                 continue;
             }
-        }
 
-        //対象マスの真上
-        if(roww > 0 && board[roww - 1][coll].value === "X"){
-            board[roww][coll].value++;
-        }
+            //対象マスの真上
+            if(roww > 0 && board[roww - 1][coll].value === "X"){
+                board[roww][coll].value++;
+            }
 
-        //対象マスの右上
-        if (
-            roww > 0 &&
-            coll < col - 1 &&
-            board[roww - 1][coll + 1].value === "X"
-          ) {
-            board[roww][coll].value++;
-          }
+            //対象マスの右上
+            if (
+                roww > 0 &&
+                coll < col - 1 &&
+                board[roww - 1][coll + 1].value === "X"
+            ) {
+                board[roww][coll].value++;
+            }
 
-        // 対象マスの右
-        if (coll < col - 1 && board[roww][coll + 1].value === "X") {
-            board[roww][coll].value++;
-        }
+            // 対象マスの右
+            if (coll < col - 1 && board[roww][coll + 1].value === "X") {
+                board[roww][coll].value++;
+            }
 
-        // 対象マスの右下
-        if (
-            roww < row - 1 &&
-            coll < col - 1 &&
-            board[roww + 1][coll + 1].value === "X"
-        ) {
-            board[roww][coll].value++;
-        }
+            // 対象マスの右下
+            if (
+                roww < row - 1 &&
+                coll < col - 1 &&
+                board[roww + 1][coll + 1].value === "X"
+            ) {
+                board[roww][coll].value++;
+            }
 
-        // 対象マスの真下
-        if (roww < row - 1 && board[roww + 1][coll].value === "X") {
-            board[roww][coll].value++;
-        }
+            // 対象マスの真下
+            if (roww < row - 1 && board[roww + 1][coll].value === "X") {
+                board[roww][coll].value++;
+            }
 
-        // 対象マスの左下
-        if (
-            roww < row - 1 &&
-            coll > 0 &&
-            board[roww + 1][coll - 1].value === "X"
-        ) {
-            board[roww][coll].value++;
-        }
+            // 対象マスの左下
+            if (
+                roww < row - 1 &&
+                coll > 0 &&
+                board[roww + 1][coll - 1].value === "X"
+            ) {
+                board[roww][coll].value++;
+            }
 
-        // 対象マスの左
-        if (coll > 0 && board[roww][coll - 1].value === "X") {
-            board[roww][coll].value++;
-        }
+            // 対象マスの左
+            if (coll > 0 && board[roww][coll - 1].value === "X") {
+                board[roww][coll].value++;
+            }
 
-        // 対象マスの左上
-        if (roww > 0 && coll > 0 && board[roww - 1][coll - 1].value === "X") {
-            board[roww][coll].value++;
+            // 対象マスの左上
+            if (roww > 0 && coll > 0 && board[roww - 1][coll - 1].value === "X") {
+                board[roww][coll].value++;
+            }
         }
     }
     return {board, mineLocation};
