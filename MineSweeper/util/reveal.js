@@ -1,27 +1,31 @@
 export const revealed = (arr, x, y, newNonMinesCount) => {
   console.log(arr[x][y]);
+  // xは行　yは列
   if (arr[x][y].revealed) {
     // console.log(arr[x][y])
-    return;
+    return arr;
   }
+  
+　// react 動画54:41
 
   // Stack of all the cells which we
   // would like to reveal/flip
   let flipped = [];
-  flipped.push(arr[x][y]);
+  flipped.push(arr[x][y]); 
   while (flipped.length !== 0) {
     let single = flipped.pop();
 
+　　 // マスに値が入っていようがなかろうが、見えるようにする
     if (!single.revealed) {
-      newNonMinesCount--;
+      newNonMinesCount--; // 爆弾以外の見えていないマス目の合計
       single.revealed = true;
     }
-
+　　// マスの値が入っているときループ処理をぬける
     if (single.value !== 0) {
       break;
     }
-
-    //Top - Left
+　// 次に調べるマスを決める処理
+    //　押したマスの左上のマス
     if (
       single.x > 0 &&
       single.y > 0 &&
@@ -31,7 +35,7 @@ export const revealed = (arr, x, y, newNonMinesCount) => {
       flipped.push(arr[single.x - 1][single.y - 1]);
     }
 
-    // Bottom - Right
+    // 押したマスの右下のマス
     if (
       single.x < arr.length - 1 &&
       single.y < arr[0].length - 1 &&
@@ -41,7 +45,7 @@ export const revealed = (arr, x, y, newNonMinesCount) => {
       flipped.push(arr[single.x + 1][single.y + 1]);
     }
 
-    // Bottom - Left
+    // 押したマスの左下のマス
     if (
       single.x < arr.length - 1 &&
       single.y > 0 &&
@@ -51,7 +55,7 @@ export const revealed = (arr, x, y, newNonMinesCount) => {
       flipped.push(arr[single.x + 1][single.y - 1]);
     }
 
-    // Top - Right
+    // 押したマスの右上のマス
     if (
       single.x > 0 &&
       single.y < arr[0].length - 1 &&
@@ -61,9 +65,7 @@ export const revealed = (arr, x, y, newNonMinesCount) => {
       flipped.push(arr[single.x - 1][single.y + 1]);
     }
 
-    // Single ones
-
-    // Top
+    // 押したマスの上のマス
     if (
       single.x > 0 &&
       arr[single.x - 1][single.y].value === 0 &&
@@ -72,7 +74,7 @@ export const revealed = (arr, x, y, newNonMinesCount) => {
       flipped.push(arr[single.x - 1][single.y]);
     }
 
-    // Bottom
+    // 押したマスの下のマス
     if (
       single.x < arr.length - 1 &&
       arr[single.x + 1][single.y].value === 0 &&
@@ -81,7 +83,7 @@ export const revealed = (arr, x, y, newNonMinesCount) => {
       flipped.push(arr[single.x + 1][single.y]);
     }
 
-    // Left
+    // 押したマスの左のマス
     if (
       single.y > 0 &&
       arr[single.x][single.y - 1].value === 0 &&
@@ -90,7 +92,7 @@ export const revealed = (arr, x, y, newNonMinesCount) => {
       flipped.push(arr[single.x][single.y - 1]);
     }
 
-    // Right
+    // 押したマスの右のマス
     if (
       single.y < arr[0].length - 1 &&
       arr[single.x][single.y + 1].value === 0 &&
@@ -99,22 +101,21 @@ export const revealed = (arr, x, y, newNonMinesCount) => {
       flipped.push(arr[single.x][single.y + 1]);
     }
 
-    // Start Revealing Items
+    // 0のマスの周りの8マスを全部見えるようにする
     if (
       single.x > 0 &&
       single.y > 0 &&
-      !arr[single.x - 1][single.y - 1].revealed
+      !arr[single.x - 1][single.y - 1].revealed　// 左上のマスが見えていない
     ) {
-      //Top Left Reveal
-
+      //　左上のマス
       arr[single.x - 1][single.y - 1].revealed = true;
-      newNonMinesCount--;
+      newNonMinesCount--;　// 爆弾以外の見えていないマス目の合計
     }
 
     if (single.y > 0 && !arr[single.x][single.y - 1].revealed) {
-      // Left Reveal
-      arr[single.x][single.y - 1].revealed = true;
-      newNonMinesCount--;
+      // 左のマス
+      arr[single.x][single.y - 1].revealed = true; // 上のマスを見えるようにする
+      newNonMinesCount--;　// 爆弾以外の見えていないマス目の合計
     }
 
     if (
@@ -122,21 +123,21 @@ export const revealed = (arr, x, y, newNonMinesCount) => {
       single.y > 0 &&
       !arr[single.x + 1][single.y - 1].revealed
     ) {
-      //Bottom Left Reveal
+      //　左下のマス
       arr[single.x + 1][single.y - 1].revealed = true;
-      newNonMinesCount--;
+      newNonMinesCount--;　// 爆弾以外の見えていないマス目の合計
     }
 
     if (single.x > 0 && !arr[single.x - 1][single.y].revealed) {
-      //Top Reveal
+      //　上のマス
       arr[single.x - 1][single.y].revealed = true;
-      newNonMinesCount--;
+      newNonMinesCount--;　// 爆弾以外の見えていないマス目の合計
     }
 
     if (single.x < arr.length - 1 && !arr[single.x + 1][single.y].revealed) {
-      // Bottom Reveal
+      // 下のマス
       arr[single.x + 1][single.y].revealed = true;
-      newNonMinesCount--;
+      newNonMinesCount--;　// 爆弾以外の見えていないマス目の合計
     }
 
     if (
@@ -144,15 +145,15 @@ export const revealed = (arr, x, y, newNonMinesCount) => {
       single.y < arr[0].length - 1 &&
       !arr[single.x - 1][single.y + 1].revealed
     ) {
-      // Top Right Reveal
+      // 右上のマス
       arr[single.x - 1][single.y + 1].revealed = true;
-      newNonMinesCount--;
+      newNonMinesCount--;　// 爆弾以外の見えていないマス目の合計
     }
 
     if (single.y < arr[0].length - 1 && !arr[single.x][single.y + 1].revealed) {
-      //Right Reveal
+      // 右のマス
       arr[single.x][single.y + 1].revealed = true;
-      newNonMinesCount--;
+      newNonMinesCount--;　// 爆弾以外の見えていないマス目の合計
     }
 
     if (
@@ -160,9 +161,9 @@ export const revealed = (arr, x, y, newNonMinesCount) => {
       single.y < arr[0].length - 1 &&
       !arr[single.x + 1][single.y + 1].revealed
     ) {
-      // Bottom Right Reveal
+      // 右下のマス
       arr[single.x + 1][single.y + 1].revealed = true;
-      newNonMinesCount--;
+      newNonMinesCount--;　// 爆弾以外の見えていないマス目の合計
     }
   }
 
