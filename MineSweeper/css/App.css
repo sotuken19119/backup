@@ -1,42 +1,73 @@
-body {
-	font: 14px "Century Gothic", Futura, sans-serif;
-	margin: 20px;
+.App {
+  text-align: center;
 }
-ol, ul {
-	padding-left: 30px;
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
 }
-.board-row:after {
-	clear: both;
-	content: "";
-	display: table;
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
 }
-.status {
-  margin-bottom: 10px;
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
 }
-.square {
-	background: #fff;
-	border: 1px solid #999;
-	float: left;
-	font-size: 24px;
-	font-weight: bold;
-	line-height: 34px;
-	height: 34px;
-	margin-right: -1px;
-	margin-top: -1px;
-	padding: 0;
-	text-align: center;
-	width: 34px;
+
+.App-link {
+  color: #61dafb;
 }
-.square:focus {
-	outline: none;
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
-.kbd-navigation .square:focus {
-	background: #ddd;
+
+.cellStyle {
+    width: 40px;
+    height: 40px; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-size: 35px;
+    background: blue;
+    font-weight: 800;
 }
-.game {
-	display: flex;
-	flex-direction: row;
+
+#gameOverImage {
+  opacity: 100;
+  z-index: 4;
+  height: 70%;
+  max-width: 100%;
+  margin: 0 50px;
+  background: url("https://www.google.com/logos/fnbx/minesweeper/lose_screen.png")
+    0px 80px no-repeat;
+  background-repeat: repeat-x;
+  position: relative;
+  padding-top: 20px;
 }
-.game-info {
-	margin-left: 20px;
+
+.tryAgain {
+  cursor: pointer;
+  margin: 0 50px;
+  border-radius: 7px;
+  background: darkgreen;
+  color: rgb(158, 255, 158);
+  padding: 10px;
+  font-weight: 700;
 }
