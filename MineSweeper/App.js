@@ -1,5 +1,7 @@
 
 import React from 'react';
+import firebase from 'firebase';
+import 'firebase/storage';
 import './CSS/App.css';
 import Board from './Components/Board';
 import Auth from './Components/Auth';
