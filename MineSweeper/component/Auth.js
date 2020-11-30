@@ -100,7 +100,7 @@ class Auth extends Component{
         }
         if(flug == true){
             console.log("a");
-            this.props.history.push('/List');
+            //this.props.history.push('/List');
         }else{
             this.setState({
                 id_str:"",
