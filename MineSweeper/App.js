@@ -2,6 +2,7 @@
 import React from 'react';
 import './CSS/App.css';
 import Board from './Components/Board';
+import Auth from './Components/Auth';
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
@@ -21,6 +22,7 @@ function App() {
   return (
     <div className="App">
       <h1>MineSweepr</h1>
+      <Auth />
       <Board />
     </div>
   );
