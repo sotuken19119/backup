@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-export default function Modal({ reset, completeTime }) {
+export default function ModalClear({ reset, completeTime }) {
   const [render, setRender] = useState(false);
   useEffect(() => {
     setTimeout(() => {  // 時間を止める
@@ -19,9 +19,10 @@ export default function Modal({ reset, completeTime }) {
       }}
     >
       {/* ゲームオーバーの時の画面 */}
-      <div id="gameOverImage"></div>
+      <div id="gameOverImage"><br/><br/>クリア</div>
+      <div>クリアタイム:{completeTime}</div>
       <div onClick={() => reset()} className="tryAgain">
-        もう一度
+        ホームに戻る
       </div>
     </div>
   );

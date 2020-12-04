@@ -1,86 +1,104 @@
-import React from 'react';
-import "../App.css";
-import Circle from './Circle';　// 爆弾の表示
+import React from "react";
+import { mineColor } from "../util/mineColors";
+import Circle from "./Circle";
 
-export default function Cell({details, updateFlag, revealCell}) {
+export default function Cell({ data, updateBoard, flagCell, flagDei,sumFlag}) {
+  const style = {
+    block: {
+      width: 40,
+      height: 40,
+      color: numColorCode(data.value),
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      fontWeight: 800,
+      fontSize: 30,
+      cursor: "pointer",
+      background: data.revealed
+        ? data.value === "X"
+          ? mineColor()
+          : bombChexPattern(data.x, data.y)
+        : chexPattern(data.x, data.y),
+    },
+  };
 
-    const cellstyle = {
-        background: details.revealed  // マスが見えるようになっていたら
-           // trueの時()内の処理をする
-            ? (details.value === "X"
-                // Xだったら
-                ? mineColor() // 爆弾の色表示
-                // falseの処理
-                : bombChexPattern(details.x,details.y)) // 見えているマスの背景を表示
-            // falseの時に処理する
-            : chexPattern(details.x, details.y),        // 見えていないマスの色を表示
+  const onClickUpdate = (e) => {
+    if (data.flagged) {
+      return;
     }
+    
+    console.log(e.type);
+    updateBoard(data.x, data.y,e);
+    sumFlag();              
+  };
 
-    return (
-        
-        <div onContextMenu={(e)=>updateFlag(e,details.x, details.y)} // onContextMenuは右クリックのイベント
-             onClick={()=>revealCell(details.x,details.y)} 
-             style={cellstyle}  // マスにスタイルの適用する
-             className="cellStyle"  // App.cssのスタイル
-            >  
-            {/* クリックされたマスが見えていないときの処理 */}
-            {!details.revealed && details.flagged ? ( 
-              "🚩" // trueの時flagを立てる
-            ) : details.revealed && details.value !== 0 ? (
-              // Xだったら爆弾のレイアウトを表示する
-              details.value === "X" ? (
-                <Circle />
-              ) : (
-                 // Xではないときの処理
-                 details.value　// マスの値を表示する
-              )
-            ) : (
-              ""　// 0だったら空白を表示
-            )}          
-        </div>
-    );
+  const onClickFlag = (e) => {   
+    e.preventDefault();
+    if(!data.revealed){
+      flagCell(data.x, data.y); 
+      flagDei(data.x, data.y);        
+    }
+  };
+
+  return (
+    <div
+      style={style.block}
+      onClick={(e) => onClickUpdate(e)}
+      onContextMenu={(e) => onClickFlag(e)}     
+    >
+      {data.flagged && !data.revealed ? (
+            "🚩"
+      ) : data.revealed && data.value !== 0 ? (
+        data.value === "X" ? (
+          <Circle />
+        ) : (
+          data.value
+        )
+      ) : (
+        ""
+      )}
+    </div>
+  );
 }
 
-// 見えるようになったマスの背景を表現
-const bombChexPattern = (x, y) => {
-    if (x % 2 === 0 && y % 2 === 0) {
-      return "#e5c29f";
-    } else if (x % 2 === 0 && y % 2 !== 0) {
-      return "#d7b899";
-    } else if (x % 2 !== 0 && y % 2 === 0) {
-      return "#d7b899";
-    } else {
-      return "#e5c29f";
-    }
-  };
-// 見えていないマスの色を表現
-  const chexPattern = (x, y) => {
-    if (x % 2 === 0 && y % 2 === 0) {
-      return "#aad751";
-    } else if (x % 2 === 0 && y % 2 !== 0) {
-      return "#a2d249";
-    } else if (x % 2 !== 0 && y % 2 === 0) {
-      return "#a2d249";
-    } else {
-      return "#aad751";
-    }
-  };
+const chexPattern = (x, y) => {
+  if (x % 2 === 0 && y % 2 === 0) {
+    return "#aad751";
+  } else if (x % 2 === 0 && y % 2 !== 0) {
+    return "#a2d249";
+  } else if (x % 2 !== 0 && y % 2 === 0) {
+    return "#a2d249";
+  } else {
+    return "#aad751";
+  }
+};
 
-  // 数字の色分け
-  const numColorCode = (num) => {
-    if (num === 1) {
-      return "#1976d2";
-    } else if (num === 2) {
-      return "#388d3c";
-    } else if (num === 3) {
-      return "#d33030";
-    } else if (num === 4) {
-      return "#7c21a2";
-    } else if (num === 5) {
-      return "#1976d2";
-    } else if (num === 6) {
-      return "#1976d2";
-    } else {
-      return "white";
-    }
-  };
+const bombChexPattern = (x, y) => {
+  if (x % 2 === 0 && y % 2 === 0) {
+    return "#e5c29f";
+  } else if (x % 2 === 0 && y % 2 !== 0) {
+    return "#d7b899";
+  } else if (x % 2 !== 0 && y % 2 === 0) {
+    return "#d7b899";
+  } else {
+    return "#e5c29f";
+  }
+};
+
+const numColorCode = (num) => {
+  if (num === 1) {
+    return "#1976d2";
+  } else if (num === 2) {
+    return "#388d3c";
+  } else if (num === 3) {
+    return "#d33030";
+  } else if (num === 4) {
+    return "#7c21a2";
+  } else if (num === 5) {
+    return "#1976d2";
+  } else if (num === 6) {
+    return "#1976d2";
+  } else {
+    return "white";
+  }
+};
