@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-export default function Modal({ reset, completeTime }) {
+export default function Modal({ reset }) {
   const [render, setRender] = useState(false);
   useEffect(() => {
     setTimeout(() => {  // 時間を止める
