@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from "react";
 
-export default function ModalClear({ reset, completeTime }) {
+export default function ModalClear({ completeTime,setGameClear}) {
   const [render, setRender] = useState(false);
   useEffect(() => {
     setTimeout(() => {  // 時間を止める
       setRender(true);
     }, 1000);
   }, []);
+
+  function reset(){
+    setRender(false);
+    setGameClear(false);
+  }
   return (
     <div
     　// モーダル画面の表示

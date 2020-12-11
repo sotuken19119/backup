@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from "react";
 
-export default function Modal({ reset }) {
+export default function Modal({setGameOver }) {
   const [render, setRender] = useState(false);
   useEffect(() => {
     setTimeout(() => {  // 時間を止める
       setRender(true);
     }, 1000);
   }, []);
+  function reset(){
+    setRender(false);
+    setGameOver(false);
+  }
   return (
     <div
     　// モーダル画面の表示
