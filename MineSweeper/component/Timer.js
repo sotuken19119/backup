@@ -6,15 +6,15 @@ export default function Timer({ gameOver, gameClear,setGameClear, sendTime , set
   let [sTime, setSTime] = useState(0);
 
   const checkGame = ()=>{
-    if(gameClear == true || gameOver == true || optionflg || restartflg) return true;
+    if(gameClear  || gameOver  || optionflg ) return true;
     else return false;
   };
 
   useEffect(() => {
     // ゲームオーバーの処理
-    if ((time > 0 && gameOver) || (time > 0 && gameClear) || (time > 0 && optionflg) || (time > 0 && restartflg)) {
+    if ((time > 0 && gameOver) || (time > 0 && gameClear) || (time > 0 && optionflg) ) {
       setSTime(time); // ゲームオーバー時のタイム
-      //setTime(0);
+      
     }
   }, [gameOver, gameClear , time , optionflg, restartflg] );// 最初のマウント（DOMへのノードの追加)の時と指定された値に変化があった場合のみに第１引数の関数を実行。
 
@@ -35,10 +35,11 @@ export default function Timer({ gameOver, gameClear,setGameClear, sendTime , set
       clearInterval(timeIntervalId);　// ここでクリアすることで多重にタイマーが実行されないようにする
       setTime(0);     // タイマーを0にリセット
       
+      
     }
   }, [time, setTime, gameOver,gameClear, sendTime]);// 最初のマウント（DOMへのノードの追加)の時と指定された値に変化があった場合のみに第１引数の関数を実行。
 
-  //console.log(timeIntervalId); 
+ 
  
   return (
     
