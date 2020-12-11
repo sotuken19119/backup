@@ -18,7 +18,7 @@ export default function Board() {
   const [newTime, setTime] = useState(0);
   const [flagCount, setFlagCount] = useState(0);
   const [revealLocation, setRevealLocation] = useState([]);
-  const [FlagRadio, setFlagRadio] = useState("");
+  const [flagRadio, setFlagRadio] = useState("");
   const [restartflg,setRestartFlg] = useState(false);
   const [flgRank,setflgRank] = useState(false);
   let flagset="a";
@@ -55,7 +55,7 @@ export default function Board() {
   };
 
   const resetGame = () =>{
-    restartmine(FlagRadio);
+    restartmine(flagRadio);
   }
   const restartmine = (x) =>{
     switch(x){
@@ -163,7 +163,7 @@ export default function Board() {
       style={{ boxShadow: "0 4px 3px rgba(0,0,0,0.3)", position: "relative" }}
     >
       {gameOver && <Modal setGameOver={setGameOver} resetGame={resetGame}/>}
-      {flg && <Option resetflg={resetflg} setFlg={setFlg} FlagRadio={FlagRadio} setOptionflg={setOptionflg} resetGame={resetGame}/>}
+      {flg && <Option resetflg={resetflg} setFlg={setFlg} flagRadio={flagRadio} setOptionflg={setOptionflg} resetGame={resetGame}/>}
       {flgRank && <Ranking setflgRank={setflgRank}/>}
       <div
         // 上側のツール画面のデザイン
@@ -176,7 +176,7 @@ export default function Board() {
           alignItems: "center",
         }}
       >
-        <button onClick={() => restartmine(FlagRadio)}> re</button>
+        <button onClick={() => restartmine(flagRadio)}> re</button>
         <span role="img" aria-label="flag" style={{ paddingBottom: 10 }}>
         🚩 <span style={{ color: "white", fontSize: 20, }}>{flagCount}</span>     
         </span>   
