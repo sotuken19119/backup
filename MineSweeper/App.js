@@ -1,9 +1,10 @@
 
 import React from 'react';
-import firebase from 'firebase';
-import 'firebase/storage';
 import './CSS/App.css';
 import Board from './Components/Board';
+import firebase from 'firebase';
+import Timer from './Components/Timer';
+import 'firebase/storage';
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
@@ -21,9 +22,9 @@ firebase.initializeApp(firebaseConfig);
 
 function App() {
   return (
-    <div className="App">
-      <Board />
-    </div>
+      <div className="App">
+        <Board />
+      </div>
   );
 }
 
