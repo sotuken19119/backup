@@ -22,7 +22,6 @@ firebase.initializeApp(firebaseConfig);
 function App() {
   return (
     <div className="App">
-      <h1>MineSweepr</h1>
       <Board />
     </div>
   );
