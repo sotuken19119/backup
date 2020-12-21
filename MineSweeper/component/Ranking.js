@@ -1,5 +1,5 @@
 import React,{ useState, useEffect } from "react";
-import RankingEazy from "./RankingEazy";
+import RankingEasy from "./RankingEasy";
 import RankingNormal from "./RankingNormal";
 import RankingHard from "./RankingHard";
 
@@ -25,6 +25,7 @@ export default function Ranking ({setflgRank}){
                 width: "100%",
                 position: "absolute",
                 background: "rgba(0,0,0,0.3)",
+                zIndex: 5,
         }}
         >
             <div>Ranking</div>
@@ -45,7 +46,7 @@ export default function Ranking ({setflgRank}){
                 <br/>
                 <div>
                     {radio == "a" ? (
-                        <RankingEazy /> 
+                        <RankingEasy /> 
                     ):( radio == "b" ?(
                         <RankingNormal /> 
                     ):(
