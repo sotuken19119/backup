@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  margin: 10%;
 }
 
 .App-logo {
@@ -37,37 +38,177 @@
   }
 }
 
+/* 未使用 */
+/* ログイン画面の「Minesweeper」ロゴ */
+.loginTitle {
+  font-family: "Starjedi";
+  color: #FFFAE1;
+  font-weight: 800;
+  display        : inline-block;
+  color          : #000000;            /* 文字の色 */
+  font-size      : 36pt;               /* 文字のサイズ */
+  letter-spacing : 4px;                /* 文字間 */
+  text-shadow    : 
+       2px  2px 1px rgba(255, 255, 26, 0.86),
+      -2px  2px 1px rgba(255, 255, 26, 0.86),
+       2px -2px 1px rgba(255, 255, 26, 0.86),
+      -2px -2px 1px rgba(255, 255, 26, 0.86),
+       2px  0px 1px rgba(255, 255, 26, 0.86),
+       0px  2px 1px rgba(255, 255, 26, 0.86),
+      -2px  0px 1px rgba(255, 255, 26, 0.86),
+       0px -2px 1px rgba(255, 255, 26, 0.86);        /* 文字の影 */
+}
+
+.board{
+  min-width: 500px;
+  margin-left: 230px;
+  
+}
+
+
+@media screen and (min-width:1138px) {
+  /*　画面サイズが1024pxからはここを読み込む　*/
+  .board{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+.menuBar {
+  position: relative;
+  height: 90px;
+  min-width: 900px;
+  margin-top: -7%;
+  margin-bottom: 4%;
+}
+
+.restartButton {
+  position: relative;
+  background-image: url(../images/restartButton.png);
+  background-size: 100%;
+  Border-radius: 50%;
+  width: 80px;
+  height: 80px;
+}
+
+.optionButton{
+  position: relative;
+  background-image: url(../images/optionButton.png);
+  background-size: 100%;
+  Border-radius: 50%;
+  width: 80px;
+  height: 80px;
+}
+
+.rankingButton{
+  position: relative;
+  background-image: url(../images/rankingButton.png);
+  background-size: 100%;
+  Border-radius: 50%;
+  width: 80px;
+  height: 80px;
+}
+
 .cellStyle {
-    width: 40px;
-    height: 40px; 
+    width: 42px;
+    height: 42px; 
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
     font-size: 35px;
-    background: blue;
     font-weight: 800;
+    border-radius:8px;
+    border-collapse: collapse;
+    background-image: url(../images/cell.jpg);
+    background-size: 100%;
+    margin: 1px;
 }
 
-#gameOverImage {
-  opacity: 100;
-  z-index: 4;
-  height: 70%;
-  max-width: 100%;
-  margin: 0 50px;
-  background: url("https://www.google.com/logos/fnbx/minesweeper/lose_screen.png")
-    0px 80px no-repeat;
-  background-repeat: repeat-x;
-  position: relative;
-  padding-top: 20px;
+.cellReveal {
+  width: 42px;
+    height: 42px; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-size: 35px;
+    font-weight: 800;
+    border-radius:8px;
+    border-collapse: collapse;
+    background-image: url(../images/reveal.jpg);
+    background-size: 100%;
+    margin: 1px;
+}
+
+.textGameOver {
+  position: absolute;
+  margin-left: -11%;
+  font-family: "Starjedi";
+  color: #FFFAE1;
+  font-weight: 800;
+  display        : inline-block;
+  color          : #000000;            /* 文字の色 */
+  font-size      : 60pt;               /* 文字のサイズ */
+  letter-spacing : 4px;                /* 文字間 */
+  text-shadow    : 
+       2px  2px 1px rgba(255, 255, 255, 0.86),
+      -2px  2px 1px rgba(255, 255, 255, 0.86),
+       2px -2px 1px rgba(255, 255, 255, 0.86),
+      -2px -2px 1px rgba(255, 255, 255, 0.86),
+       2px  0px 1px rgba(255, 255, 255, 0.86),
+       0px  2px 1px rgba(255, 255, 255, 0.86),
+      -2px  0px 1px rgba(255, 255, 255, 0.86),
+       0px -2px 1px rgba(255, 255, 255, 0.86);        /* 文字の影 */
+}
+@media screen and (min-width:1138px) {
+  /*　画面サイズが1024pxからはここを読み込む　*/
+  .textGameOver{
+
+  }
+}
+
+.textClear{
+  position: absolute;
+  margin-left: -30%;
+  font-family: "Starjedi";
+  color: #FFFAE1;
+  font-weight: 800;
+  display        : inline-block;
+  color          : #000000;            /* 文字の色 */
+  font-size      : 60pt;               /* 文字のサイズ */
+  letter-spacing : 4px;                /* 文字間 */
+  text-shadow    : 
+       2px  2px 1px rgba(255, 255, 255, 0.86),
+      -2px  2px 1px rgba(255, 255, 255, 0.86),
+       2px -2px 1px rgba(255, 255, 255, 0.86),
+      -2px -2px 1px rgba(255, 255, 255, 0.86),
+       2px  0px 1px rgba(255, 255, 255, 0.86),
+       0px  2px 1px rgba(255, 255, 255, 0.86),
+      -2px  0px 1px rgba(255, 255, 255, 0.86),
+       0px -2px 1px rgba(255, 255, 255, 0.86);        /* 文字の影 */
+}
+@media screen and (min-width:1138px) {
+  /*　画面サイズが1024pxからはここを読み込む　*/
+  .textClear{
+    
+  }
 }
 
 .tryAgain {
+  position: absolute;
   cursor: pointer;
-  margin: 0 50px;
+  margin-left: 60%;
+  width: 150px;
+  height: 30px;
   border-radius: 7px;
   background: darkgreen;
   color: rgb(158, 255, 158);
   padding: 10px;
+  font-size: 20px;
   font-weight: 700;
 }
