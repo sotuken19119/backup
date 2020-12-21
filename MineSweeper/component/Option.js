@@ -30,19 +30,20 @@ export default function Option ({resetflg , setFlg ,FlagRadio , setOptionflg}) {
                 width: "100%",
                 position: "absolute",
                 background: "rgba(0,0,0,0.3)",
+                marginTop: 20,
           }}
         >
-            <div>Option</div>
-            <label>Easy</label>
+            <div style={{color: "#FFFFFF"}}>Option</div>
+            <label style={{color: "#FFFFFF"}}>Easy</label>
             <input type="radio" name="aradio" value="A" checked={radio === 'a'}
                        onChange={() => setRadio("a")}
                     /> <br />
-            <label>Normal</label>
+            <label style={{color: "#FFFFFF"}}>Normal</label>
             <input type="radio" name="aradio" value="B" checked={radio === 'b'}
                        onChange={() => setRadio("b")}
                     /> 
             <br />
-            <label>Hard</label>
+            <label style={{color: "#FFFFFF"}}>Hard</label>
             <input type="radio" name="aradio" value="C" checked={radio === 'c'}
                        onChange={() => setRadio("c")}
                     /> <br />
