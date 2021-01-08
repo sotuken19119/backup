@@ -7,6 +7,9 @@ import Timer from "./Timer";
 import {Revealed} from "../util/Reveal";
 import Option from "./Option";
 import Ranking from './Ranking';
+import Auth from './Auth';
+import firebase from 'firebase';
+import 'firebase/storage';
 
 //Chrome拡張「ColorZilla」
 
@@ -37,15 +40,26 @@ const Board = () =>{
     //リスタートボタンフラグstate
     const [restartflg,setRestartFlg] = useState(false);
     //ランキングボタンフラグstate
-    const [flgRank,setflgRank] = useState(false);
+    const [flgRank,setFlgRank] = useState(false);
     //難易度を変えたかどうかのフラグstate
     const [flg,setFlg] = useState(false);
     //オプションボタンフラグstate
     const [optionflg,setOptionflg] = useState(false);
+    // データベースのデータを入れる
+    const [data, setData] = useState([]);
+    // ログインしているユーザーIDをいれる
+    const [roginuser,setRoginUser] = useState("");
+    // ログイン画面を表示するフラグ
+    const [roginflg, setRoginFlg] = useState(true);
+    // ログイン画面の時タイマーを0にするフラグ
+    const [rogtimeflg, setRogTimeFlg] = useState(false);
+    const [userDataEasy, setUserDataEasy] = useState([]);
+    const [userDataNormal, setUserDataNormal] = useState([]);
+    const [userDataHard, setUserDataHard] = useState([]);
 
     let xboard = 8; //行の初期値
     let yboard = 10; //列の初期値
-    let bombCount = 5; //爆弾の数の初期値
+    let bombCount = 8; //爆弾の数の初期値
     let flagset = "a"; //難易度の初期値
 
     useEffect(() => {
@@ -74,48 +88,122 @@ const Board = () =>{
             //難易度初期化
             setFlagRadio("a");
             //ランキングボタンフラグを初期化
-            setflgRank(false);
+            setFlgRank(false);
             //難易度を変えたかどうかのフラグを初期化
             setFlg(false);
+            
         };
         //呼び出す
         generateBoard();
 
     }, [restart, setRestart]);//この２つのstateが変更されたらuseEffectを実行する
 
+    useEffect(() => {
+      getFireData();
+    },[]);
+
+  function getFireData(){
+    //database取得
+    let db = firebase.database();
+    //データパスの取得
+    let ref = db.ref("userInfo/");
+    let self=this;
+    //データ取得時のメソッド
+    ref
+        //並び変えメゾット
+        //キーによって並び変える
+        .orderByKey()
+        //フィルターメゾット
+        //最初から引数の数だけ取り出す
+        .limitToFirst(10)
+        //第一引数処理のイベント名
+        //snapshotはイベント時にうけとった
+        //データの情報をまとめたオブジェクト
+        .on('value',snapshot=>{
+            setData(snapshot.val());
+            
+        });
+        
+  }
+
     const resetflg = (x) =>{
         flagset = x;
         restartmine(flagset);                                                                                                                                                                           
     };
 
-    const resetGame = () =>{
-        restartmine(flagRadio);
+    const endGame = () =>{
+        endmine(flagRadio);
     }
 
     const restartmine = (x) =>{
+        console.log(flagRadio);
         switch(x){
-            case "a": xboard = 8; yboard = 10; bombCount = 5;
+            case "a": xboard = 8; yboard = 10; bombCount = 8;
             break;
-            case "b": xboard = 10; yboard = 15; bombCount = 15;
+            case "b": xboard = 10; yboard = 15; bombCount = 20;
             break;
-            case "c": xboard = 15; yboard = 20; bombCount = 30;
+            case "c": xboard = 15; yboard = 20; bombCount = 38;
             break;
             }
-    　  //難易度を変えたときとリセットの時の初期化
         const getBoard = CreateBoard(xboard, yboard, bombCount, setMineLocations);
-        setNonMinesCount(xboard*yboard - bombCount);
+    　  //難易度を変えたときとリセットの時の初期化
+        setNonMinesCount(xboard * yboard - bombCount);
+        //フラッグの数を初期化
         setFlagCount(bombCount);
-        setTime(0);
-        setflgRank(false);
+        //変更したboard情報を更新
         setBoard(getBoard.board);
+        //爆弾の位置情報を取得
         setMineLocations(getBoard.mineLocation);
+        //ゲームオーバーフラグを初期化
         setGameOver(false);
+        //ゲームクリアフラグを初期化
+        setGameClear(false);
+        //リスタートフラグを初期化
         setRestart(false);
+        //明らかになるマスの座標配列を初期化
+        setRevealLocation([]);
+        //ランキングボタンフラグを初期化
+        setFlgRank(false);
+        //難易度を変えたかどうかのフラグを初期化
         setFlg(false);
-        setGameClear(false);   
-        setRevealLocation([]); 
-        setFlagRadio(x); 
+        setFlagRadio(x);
         setRestartFlg(true);
+        setTime(0);
+    };   
+
+    const endmine = (x) =>{
+        console.log(flagRadio);
+        switch(x){
+            case "a": xboard = 8; yboard = 10; bombCount = 8;
+            break;
+            case "b": xboard = 10; yboard = 15; bombCount = 20;
+            break;
+            case "c": xboard = 15; yboard = 20; bombCount = 38;
+            break;
+            }
+        const getBoard = CreateBoard(xboard, yboard, bombCount, setMineLocations);
+    　  //難易度を変えたときとリセットの時の初期化
+        setNonMinesCount(xboard * yboard - bombCount);
+        //フラッグの数を初期化
+        setFlagCount(bombCount);
+        //変更したboard情報を更新
+        setBoard(getBoard.board);
+        //爆弾の位置情報を取得
+        setMineLocations(getBoard.mineLocation);
+        //ゲームオーバーフラグを初期化
+        setGameOver(false);
+        //ゲームクリアフラグを初期化
+        setGameClear(false);
+        //リスタートフラグを初期化
+        setRestart(false);
+        //明らかになるマスの座標配列を初期化
+        setRevealLocation([]);
+        //ランキングボタンフラグを初期化
+        setFlgRank(false);
+        //難易度を変えたかどうかのフラグを初期化
+        setFlg(false);
+        setFlagRadio(x);
+        setTime(0);
     };   
     
 
@@ -145,7 +233,7 @@ const Board = () =>{
             setBoard(newBoardValues.arr);
             setNonMinesCount(newBoardValues.newNonMinesCount);
             setRevealLocation(newBoardValues.newReveal);
-            console.log(nonMinesCount);
+            
             if(nonMinesCount == 1){
                 setGameClear(true);
             }
@@ -195,8 +283,89 @@ const Board = () =>{
       }
 
       function changeRank(){
-        setflgRank(true);
+        setFlgRank(true);
+        sortDataEasy();
+        sortDataNormal();
+        sortDataHard();
+      };
+
+      function sortDataEasy(){
+        let x = 999999;
+        let id = [1,2,3,4,5];
+        let q=0;
+        for(let i in data){
+            id[i] = data[i].easyTime;
+            userDataEasy[i] = i;
+            console.log(userDataEasy[i]);
+        }
+        userDataEasy.shift();
+        console.log(userDataEasy);
+        id.shift();
+        for(let i = 0; i < 4; i++){
+          for(let j = 4;j>i;j--){
+              if(id[j] < id[j-1]){
+                  x = id[j];
+                  id[j]=id[j-1];
+                  id[j-1]=x;
+                  q = userDataEasy[j];
+                  userDataEasy[j] = userDataEasy[j-1];
+                  userDataEasy[j-1] = q;
+              }
+            }
+        }    
       }
+    function sortDataNormal(){
+        let x = 999999;
+        let id = [1,2,3,4,5];
+        let q=0;
+        for(let i in data){
+            id[i] = data[i].nomalTime;
+            userDataNormal[i] = i;
+            console.log(userDataNormal[i]);
+        }
+        userDataNormal.shift();
+        console.log(userDataNormal);
+        id.shift();
+        for(let i = 0; i < 4; i++){
+          for(let j = 4;j>i;j--){
+              if(id[j] < id[j-1]){
+                  x = id[j];
+                  id[j]=id[j-1];
+                  id[j-1]=x;
+                  q = userDataNormal[j];
+                  userDataNormal[j] = userDataNormal[j-1];
+                  userDataNormal[j-1] = q;
+              }
+            }
+        } 
+      }
+    
+    function sortDataHard(){
+        let x = 999999;
+        let id = [1,2,3,4,5];
+        let q=0;
+        for(let i in data){
+            id[i] = data[i].hardTime;
+            userDataHard[i] = i;
+            console.log(userDataHard[i]);
+        }
+        userDataHard.shift();
+        console.log(userDataHard);
+        id.shift();
+        for(let i = 0; i < 4; i++){
+          for(let j = 4;j>i;j--){
+              if(id[j] < id[j-1]){
+                  x = id[j];
+                  id[j]=id[j-1];
+                  id[j-1]=x;
+                  q = userDataHard[j];
+                  userDataHard[j] = userDataHard[j-1];
+                  userDataHard[j-1] = q;
+              }
+            }
+        } 
+      }
+     
     
       function changeOption(){
         setFlg(true);
@@ -204,6 +373,7 @@ const Board = () =>{
 
     return(
         <div style={{zindex: 1}}>
+            
             <div className="menuBar">
                 <span>
                     <button onClick={() => restartmine(flagRadio)} className="restartButton"> </button>
@@ -226,6 +396,11 @@ const Board = () =>{
                         optionflg={optionflg} 
                         restartflg ={restartflg} 
                         setRestartflg={setRestartFlg}
+                        data={data}
+                        flagRadio={flagRadio}
+                        roginuser={roginuser}
+                        rogtimeflg={rogtimeflg}
+                        setRogTimeFlg={setRogTimeFlg}
                     />
                 </span>
                 <span style={{paddingLeft: 80}}>
@@ -233,11 +408,11 @@ const Board = () =>{
                 </span>
             </div>
             <div  className="board">
-
-                {gameOver && <Modal　reset = {setRestart} completetime = {newTime} />}
-                {gameClear && <ModalClear reset = {setRestart}/>}　
-                {flg && <Option resetflg={resetflg} setFlg={setFlg} flagRadio={flagRadio} setOptionflg={setOptionflg} resetGame={resetGame}/>}
-                {flgRank && <Ranking setflgRank={setflgRank}/>}
+                {roginflg && <Auth data={data} setRoginUser={setRoginUser} setRoginFlg={setRoginFlg} setRogTimeFlg={setRogTimeFlg}/> } 
+                {gameOver && <Modal　endGame={endGame} />}
+                {gameClear && <ModalClear endGame={endGame}/>}　
+                {flg && <Option resetflg={resetflg} setFlg={setFlg} flagRadio={flagRadio} setOptionflg={setOptionflg} />}
+                {flgRank && <Ranking setFlgRank={setFlgRank} data={data} userDataEasy={userDataEasy} userDataNormal={userDataNormal} userDataHard={userDataHard}/>}
 
                 {board.map((singleRow,index1) => {
                     return(

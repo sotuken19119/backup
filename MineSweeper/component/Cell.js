@@ -16,15 +16,13 @@ export default function Cell({ details, revealCell, flagCell, flagDei, sumFlag})
         if(details.flagged){
             return;
         }
-
-        console.log(e.type);
         revealCell(details.x, details.y);
         sumFlag();
     };
 
     const onClickFlag = (e) => {
         e.preventDefault();
-        if(!details.revealed){
+        if(!details.Revealed){
             flagCell(e, details.x, details.y);
             flagDei(details.x, details.y);
         }

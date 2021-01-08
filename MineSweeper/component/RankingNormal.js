@@ -1,59 +1,15 @@
 import React from "react";
-import firebase from 'firebase';
-import 'firebase/storage';
 
-class RankingNormal extends React.Component{
-    constructor(props){
-        super(props);
-        this.state={
-            data:[],
-            userData:[],
-        }
-        this.sortData = this.sortData.bind(this);
-    }
-    getFireData(){
-        //database取得
-        let db = firebase.database();
-        //データパスの取得
-        let ref = db.ref("userInfo/");
-
-        let self=this;
-        //データ取得時のメソッド
-        ref
-            //並び変えメゾット
-            //キーによって並び変える
-            .orderByKey()
-            //フィルターメゾット
-            //最初から引数の数だけ取り出す
-            .limitToFirst(5)
-            //第一引数処理のイベント名
-            //snapshotはイベント時にうけとった
-            //データの情報をまとめたオブジェクト
-            .on('value',snapshot=>{
-                self.setState({
-                    data:snapshot.val()
-                });
-            });
-    }
-
-    sortData(){
-        let x = 9999;
-        this.state.data.sort();
-        console.log(this.state.data[0].ID);
-    }
-
-    render(){
-        return (
+export default function RankingNormal({data,userDataNormal}) {  
+    return (
+        <div>
             <div><br />
-                <div onClick={this.sortData}>a</div>
-                <div><span style={{paddingRight:70}}>BestTime</span>　<span>Name</span></div> <br />
-                <div><span style={{paddingRight:100}}>w</span>　<span>w1</span></div> 
-                <div><span style={{paddingRight:100}}>s</span>　<span>s1</span></div> 
-                <div><span style={{paddingRight:100}}>j</span>　<span>j1</span></div> 
-                <div><span style={{paddingRight:100}}>f</span>　<span>f1</span></div> <br />
-            </div>  
-                
-        );
-    }
+                <div><span style={{paddingRight:70, color: "#FFFFFF"}}>BestTime</span>　<span>Name</span></div> <br />
+                <div><span style={{paddingRight:100, color: "#FFFFFF"}}>{data[userDataNormal[0]].nomalTime}</span>　<span style={{color: "#FFFFFF"}}>{data[userDataNormal[0]].ID}</span></div> 
+                <div><span style={{paddingRight:100, color: "#FFFFFF"}}>{data[userDataNormal[1]].nomalTime}</span>　<span style={{color: "#FFFFFF"}}>{data[userDataNormal[1]].ID}</span></div> 
+                <div><span style={{paddingRight:100, color: "#FFFFFF"}}>{data[userDataNormal[2]].nomalTime}</span>　<span style={{color: "#FFFFFF"}}>{data[userDataNormal[2]].ID}</span></div> 
+                <div><span style={{paddingRight:100, color: "#FFFFFF"}}>{data[userDataNormal[3]].nomalTime}</span>　<span style={{color: "#FFFFFF"}}>{data[userDataNormal[3]].ID}</span></div> <br />
+            </div> 
+        </div>
+    );
 }
-export default RankingNormal;

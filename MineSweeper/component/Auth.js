@@ -1,133 +1,125 @@
-import React,{Component} from 'react';
-import firebase from 'firebase';
-import 'firebase/storage';
-import { withRouter } from 'react-router-dom/cjs/react-router-dom.min';
+import React, { useState, useEffect } from "react";
 
-class Auth extends Component{
-    constructor(props){
-        super(props);
-        this.state={
-            id_str: "",
-            pass_str: "",
-            data:[],
-        };
-        this.getFireData();
-        this.doChangeID = this.doChangeID.bind(this);
-        this.doChangePass = this.doChangePass.bind(this);
-        this.doAction = this.doAction.bind(this);
-    }
-    //IDとpassの判定処理
-    //login可能かの処理
-    getFireData(){
-        //database取得
-        let db = firebase.database();
-        //データパスの取得
-        let ref = db.ref("user/");
+export default function Auth({data, setRoginUser, setRoginFlg, setRogTimeFlg}){
+    //idだよ
+    const [id_str,setId] = useState("");
+    const [pass_str,setPass] = useState("");
+    const [render, setRender] = useState(true);
+    const [error_str,setError] = useState("");
 
-        let self=this;
-        //データ取得時のメソッド
-        ref
-            //並び変えメゾット
-            //キーによって並び変える
-            .orderByKey()
-            //フィルターメゾット
-            //最初から引数の数だけ取り出す
-            .limitToFirst(10)
-            //第一引数処理のイベント名
-            //snapshotはイベント時にうけとった
-            //データの情報をまとめたオブジェクト
-            .on('value',snapshot=>{
-                self.setState({
-                    data:snapshot.val()
-                });
-            });
-    }
-
-
-    //名前の変更
-    doChangeID(e) {
-        this.setState({
-        id_str: e.target.value
-        });
+    function doChangeID(e) {
+        setId(e.target.value);
     }
 
     //パスワードの変更
-    doChangePass(e) {
-        this.setState({
-        pass_str: e.target.value
-        });
+    function doChangePass(e) {
+        setPass(e.target.value);
     }
 
-    doAction(e) {
-        this.addFireData();
+    function doAction(e) {
+        addFireData();
+        
     }
 
-    checkStr(ID,pass){
+    function checkStr(ID,pass){
         if(ID == '' && pass == ''){
-            console.log("IDとパスワードを入力してください");
+            setError("IDとパスワードを入力してください");
             return false;
         }else{
-            if(this.checkID(ID) && this.checkPass(pass)) return true;
+            if(checkID(ID) && checkPass(pass)) return true;
         }
     }
 
-    checkID(ID){
+    function checkID(ID){
         if(ID == ''){
-            console.log("IDを入力してください");
+            setError("IDを入力してください");
             return false;
         }
         return true;
     }
 
-    checkPass(pass){
+    function checkPass(pass){
         if(pass == ''){
-            console.log("パスワードを入力してください");
+            setError("パスワードを入力してください");
             return false;
         }
         return true;
     }
 
-    addFireData() {
+    function addFireData() {
         var flug = false;
-        if(this.checkStr(this.state.id_str,this.state.pass_str)){
-            for(let i in this.state.data){
-                if(this.state.data[i].ID == this.state.id_str){
-                    if(this.state.data[i].password == this.state.pass_str){
+        setError("");
+        if(checkStr(id_str,pass_str)){
+            console.log(data);
+            for(let i in data){
+                console.log(data[i].ID);
+                if(data[i].ID == id_str){
+                    if(data[i].Pass == pass_str){
                         flug = true;
+                        setRoginUser(id_str);
                     }
                 }
             }
         }
         if(flug == true){
             console.log("a");
-            //this.props.history.push('/List');
+            setRender(false);
+            setRoginFlg(false);
+            setRogTimeFlg(true);
         }else{
-            this.setState({
-                id_str:"",
-                pass_str:""
-            })
+            setId("");
+            setPass("");
+            if(error_str == ""){
+                
+            setError("IDまたはパスワードが間違っています。");
+            }
         }
     }
-
-    render(){
-        return(
-            <div>
+        
+    return (
+        <div
+            // モーダルのデザイン
+            style={{
+                opacity: render ? 1 : 0,　//render-stateがtrueだったら透明化解除
+                height: "90%",
+                width: "70%",
+                marginTop: -200,
+                position: "absolute",
+                background: "rgba(0,0,0,1)", //alphaは透明度の指定
+                zIndex: 9999,
+                }}
+        >
+            <div
+            style={{
+                textAlign:"center",
+                color:"white",
+                fontSize:50,
+                marginTop:"5%",
+            }}>LOGIN</div>
+            <div
+            >
                 <input
                 type="text"
                 placeholder="your ID."
-                onChange={this.doChangeID}
-                value={this.state.id_str}
+                className="Auth_input"
+                onChange={doChangeID}
+                value={id_str}
                 />
                 <input
                 type="text"
                 placeholder="your password."
-                onChange={this.doChangePass}
-                value={this.state.pass_str}
+                className="Auth_input"
+                onChange={doChangePass}
+                value={pass_str}
                 />
-                <button onClick={this.doAction}>login</button>
+                <div
+                style={{
+                    textAlign:"center",
+                    color:"white",
+                    fontSize:50,
+                }}>{error_str}</div>
+                <button onClick={doAction} className="Auth_button">login</button>
             </div>
-        );
-    }
+        </div>
+    );
 }
-
-export default withRouter(Auth);
